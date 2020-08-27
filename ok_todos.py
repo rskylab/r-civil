@@ -9,7 +9,7 @@ import datetime
 from docx.shared import Pt
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from termcolor import cprint
+from termcolor import cprint # fazer isso por classe com bold/underline
 
 diretorio = 'Z:/Mexico/NUDIVERSIS NUCORA/=MODELOS e docs para ATENDIMENTO=/.REQUALIFICAÇÃO CIVIL/MODELOS DE OFÍCIOS PARA CERTIDÕES NEGATIVAS/'
 
@@ -31,7 +31,7 @@ while 'o' in sn:
 
 print('\n')
 
-lista_est = ['1', 'Mariana', 'mariana', '2', 'Melissa', 'melissa', '3', 'Wagner', 'wagner', '4', 'Thiago', 'thiago']
+lista_est = ['1', 'Mariana', 'mariana', '2', 'Melissa', 'melissa', '3', 'Wagner', 'wagner', '4', 'Thiago', 'thiago'] #sublistas aqui p dps verificar pertencimento à sublista? problema da verificacao do quem. os 2?
 
 pergunta_estagiarios = 'Que estagiário está fazendo a requalificação? \n1. Mariana \n2. Melissa \n3. Wagner \n4. Thiago \n\n'
 
@@ -81,7 +81,7 @@ def criar_planilha():
             print(f'Feche a planilha {arq} e rode esta célula novamente.')
             return
                   
-        ws = wb.create_sheet(sl_assistido)
+        ws = wb.create_sheet(sl_assistido) #criar dicionario coluna:width, iterar sobre pares
         ws['A1'] = 'Nome'
         ws['B1'] = 'Nome de registro'
         ws['C1'] = 'Nacionalidade'
@@ -116,7 +116,7 @@ def criar_planilha():
 
         wb.save(plan_p)
         
-        if not os.path.exists(assistido):
+        if not os.path.exists(assistido):  #redundante?
             os.mkdir(assistido)
         
         print(f'Foi criada a planilha {assistido} no arquivo {arq}.')
@@ -332,7 +332,7 @@ def gerar_oficios():
     telefone = str(ws['M2'].value)
     
     none_count = 0
-    for i in ws.iter_rows(min_row=2, max_row=2, min_col = 1, max_col=14, values_only=True):
+    for i in ws.iter_rows(min_row=2, max_row=2, min_col = 1, max_col=14, values_only=True): #melhor forma?
         for x in i:
             if x == None:
                 none_count +=1
@@ -359,9 +359,19 @@ def gerar_oficios():
         if i[0] != None:
             lista_cidades.append(i[0])
 
-    lista_erros = ['Rio de Janeiro ','rio de janeiro', 'rio de janeiro ', ' Rio de Janeiro', ' rio de janeiro', 'Rio de janeiro', ' Rio de janeiro', 'Rio de janeiro ', 'Belford Roxo ', ' Belford Roxo', 'belford roxo', ' belford roxo', 'belford roxo ', 'Belford roxo', ' Belford roxo', 'Belford roxo ', 'Duque de Caxias ', ' Duque de Caxias', 'duque de caxias', ' duque de caxias', 'duque de caxias ', 'Duque de caxias', ' Duque de caxias', 'Duque de caxias ', ' Magé', 'Magé ', 'magé', 'magé ', ' magé', 'Mage', 'Mage ', ' Mage', 'mage', ' mage', 'mage ', 'Niterói ', ' Niterói', 'niterói', ' niterói', 'niterói ', 'Niteroi', 'Niteroi ', ' Niteroi', 'niteroi', 'niteroi ', ' niteroi', 'Nova Iguaçu ', ' Nova Iguaçu', 'Nova iguaçu', 'Nova iguaçu ', ' Nova iguaçu', 'nova iguaçu', 'nova iguaçu ', ' nova iguaçu', 'São Gonçalo ', ' São Gonçalo', 'São gonçalo', ' São gonçalo', 'São gonçalo ', 'são gonçalo', 'são gonçalo ', ' são gonçalo', 'Sao Gonçalo', ' Sao Gonçalo', 'Sao Gonçalo ', 'São João de Meriti ', ' São João de Meriti', ' São joão de meriti', 'São joão de meriti', 'São joão de meriti ', 'são joão de meriti', ' são joão de meriti', 'são joão de meriti ', ' Seropédica', 'Seropédica ', 'seropédica', ' seropédica', 'seropédica ', 'Seropedica', ' Seropedica', 'Seropedica ', 'seropedica', ' seropedica', 'seropedica ']
+    lista_erros = [  #regex?
+        'Rio de Janeiro ','rio de janeiro', 'rio de janeiro ', ' Rio de Janeiro', ' rio de janeiro', 'Rio de janeiro', ' Rio de janeiro', 'Rio de janeiro ',
+        'Belford Roxo ', ' Belford Roxo', 'belford roxo', ' belford roxo', 'belford roxo ', 'Belford roxo', ' Belford roxo', 'Belford roxo ', 
+        'Duque de Caxias ', ' Duque de Caxias', 'duque de caxias', ' duque de caxias', 'duque de caxias ', 'Duque de caxias', ' Duque de caxias', 'Duque de caxias ', 
+        ' Magé', 'Magé ', 'magé', 'magé ', ' magé', 'Mage', 'Mage ', ' Mage', 'mage', ' mage', 'mage ', 
+        'Niterói ', ' Niterói', 'niterói', ' niterói', 'niterói ', 'Niteroi', 'Niteroi ', ' Niteroi', 'niteroi', 'niteroi ', ' niteroi', 
+        'Nova Iguaçu ', ' Nova Iguaçu', 'Nova iguaçu', 'Nova iguaçu ', ' Nova iguaçu', 'nova iguaçu', 'nova iguaçu ', ' nova iguaçu', 
+        'São Gonçalo ', ' São Gonçalo', 'São gonçalo', ' São gonçalo', 'São gonçalo ', 'são gonçalo', 'são gonçalo ', ' são gonçalo', 'Sao Gonçalo', ' Sao Gonçalo', 'Sao Gonçalo ', 
+        'São João de Meriti ', ' São João de Meriti', ' São joão de meriti', 'São joão de meriti', 'São joão de meriti ', 'são joão de meriti', ' são joão de meriti', 'são joão de meriti ', 
+        ' Seropédica', 'Seropédica ', 'seropédica', ' seropédica', 'seropédica ', 'Seropedica', ' Seropedica', 'Seropedica ', 'seropedica', ' seropedica', 'seropedica '
+    ]
                    
-    subfolders = [ f.name for f in os.scandir(diretorio) if f.is_dir() ]
+    subfolders = [ f.name for f in os.scandir(diretorio) if f.is_dir() ] #scandir usado pro ngc enorme la em cima?
     for i in lista_cidades:
         if i not in subfolders:
             if i not in lista_erros:
@@ -370,6 +380,8 @@ def gerar_oficios():
     
     lista_oficios.append(padrao_zip)
 
+    
+    #nao tem como essa repeticao ser eficiente; olhar melhor o mecanismo
     if 'Rio de Janeiro' in lista_cidades or 'Rio de Janeiro ' in lista_cidades or 'rio de janeiro' in lista_cidades or 'rio de janeiro ' in lista_cidades or ' Rio de Janeiro' in lista_cidades or ' rio de janeiro' in lista_cidades or 'Rio de janeiro' in lista_cidades or ' Rio de janeiro' in lista_cidades or 'Rio de janeiro ' in lista_cidades:
 
         lista_oficios.append(z_rio)
@@ -432,7 +444,7 @@ def gerar_oficios():
    
     for i in lista_oficios:
         for x in i:
-            try:
+            try:   #pq n jogar isso la pra cima?
                 controle.save(ctrl_p)
             except PermissionError:
                 print('A planilha do controle de ofícios está aberta. Feche o controle e rode esta célula novamente.')
